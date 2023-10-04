@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.mvc.pj_lyw.dao.CommonDAO">
+	<select id="idCheck" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM member WHERE email = #{strId}
+	</select>
+	<select id="pwdCheck" parameterType="String" resultType="String">
+		SELECT password FROM member WHERE email = #{strId}
+	</select>
+	<select id="selectKey" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM member
+		WHERE key = #{key}
+	</select>
+	<update id="updateClientGrade" parameterType="String">
+		UPDATE client
+		SET enabled = '1'
+		WHERE key = #{key}
+	</update>
+	<update id="updateExpertGrade" parameterType="String">
+		UPDATE expert
+		SET enabled = '1'
+		WHERE key = #{key}
+	</update>
+	<insert id="insertClientMember" parameterType="spring.mvc.pj_lyw.dto.MemberDTO">
+		INSERT INTO client
+		VALUES(client_id_sequence.NEXTVAL,#{nickname},#{email},#{password},#{phone},sysdate,#{key},0)
+	</insert>
+	<select id="idPasswordChkClient" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM client 
+		WHERE email = #{strId} AND password = #{strPassword}
+	</select>
+	<delete id="deleteClientMember" parameterType="String">
+		DELETE FROM client 
+		WHERE email = #{strId}
+	</delete>
+	<select id="getClientMemberDetail" parameterType="String" resultType="spring.mvc.pj_lyw.dto.MemberDTO">
+		SELECT * FROM client
+		WHERE email = #{strId}
+	</select>
+	<update id="updateClientMember" parameterType="spring.mvc.pj_lyw.dto.MemberDTO">
+		UPDATE client
+		SET Nickname = #{nickname}, password = #{password}, phone = #{phone}
+		WHERE email = #{email}
+	</update>
+	
+	<insert id="insertExpertMember" parameterType="spring.mvc.pj_lyw.dto.MemberDTO">
+		INSERT INTO expert
+		VALUES(expert_id_sequence.NEXTVAL,#{nickname},#{email},#{password},#{phone},sysdate,#{key},0)
+	</insert>
+	<select id="idPasswordChkExpert" parameterType="Map" resultType="int">
+		SELECT COUNT(*) FROM expert 
+		WHERE email = #{strId} AND password = #{strPassword}
+	</select>
+	<delete id="deleteExpertMember" parameterType="String">
+		DELETE FROM expert 
+		WHERE email = #{strId}
+	</delete>
+	<select id="getExpertMemberDetail" parameterType="String" resultType="spring.mvc.pj_lyw.dto.MemberDTO">
+		SELECT * FROM expert
+		WHERE email = #{strId}
+	</select>
+	<update id="updateExpertMember" parameterType="spring.mvc.pj_lyw.dto.MemberDTO">
+		UPDATE expert
+		SET Nickname = #{nickname}, password = #{password}, phone = #{phone}
+		WHERE email = #{email}
+	</update>
+	
+	<select id="noticeList" parameterType="Map" resultType="spring.mvc.pj_lyw.dto.NoticeDTO">
+		SELECT *
+		FROM(SELECT rownum AS rnum, notice_tbl.*
+			FROM (SELECT * FROM notice ORDER BY notice_id DESC) notice_tbl)
+		WHERE rnum BETWEEN #{startRow} AND #{EndRow}
+	</select>
+	<select id="noticeCnt" resultType="int">
+		SELECT COUNT(*) FROM NOTICE
+	</select>
+	<insert id="insertNotice" parameterType="spring.mvc.pj_lyw.dto.NoticeDTO">
+		INSERT INTO notice
+		VALUES(notice_id_sequence.NEXTVAL, #{notice_title}, #{notice_text})
+	</insert>
+	<select id="getNoticeDetail" parameterType="int" resultType="spring.mvc.pj_lyw.dto.NoticeDTO">
+		SELECT * FROM Notice WHERE notice_id = #{notice_id}
+	</select>
+	<update id="updateNotice" parameterType="spring.mvc.pj_lyw.dto.NoticeDTO">
+		UPDATE notice
+		SET notice_title = #{notice_title}, notice_text = #{notice_text}
+		WHERE notice_id = #{notice_id}
+	</update>
+	<delete id="deleteNotice" parameterType="int">
+		DELETE FROM notice
+		WHERE notice_id = #{notice_id}
+	</delete>
+</mapper>

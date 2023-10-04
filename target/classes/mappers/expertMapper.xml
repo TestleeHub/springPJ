@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="spring.mvc.pj_lyw.dao.ExpertDAO">
+	<select id="productList" parameterType="Map" resultType="spring.mvc.pj_lyw.dto.ProductDTO">
+		SELECT *
+		FROM(SELECT rownum AS rnum, expertproduct.*
+			FROM (SELECT * FROM expertproductlist WHERE email = #{expertId} ORDER BY reg_date DESC) expertproduct)
+		WHERE rnum BETWEEN #{start} AND #{end}
+	</select>
+	<select id="totalProductList" parameterType="String" resultType="spring.mvc.pj_lyw.dto.ProductDTO">
+		SELECT * FROM expertproductlist WHERE email = #{expertId}
+	</select>
+	<select id="getProductCnt" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM expertproductlist
+		WHERE email = #{expertId}
+	</select>
+	<select id="getExpertId" parameterType="String" resultType="int">
+		SELECT expert_id FROM expert
+		WHERE email = #{expertId}
+	</select>
+	<insert id="insertProduct" parameterType="spring.mvc.pj_lyw.dto.ProductDTO">
+		INSERT INTO product
+		VALUES(product_id_sequence.NEXTVAL, #{expert_id}, #{name}, #{price}, #{category}, #{explanation}, #{description}, sysdate, #{image}, 'y')
+	</insert>
+	<select id="getProduct" parameterType="int" resultType="spring.mvc.pj_lyw.dto.ProductDTO">
+		SELECT * FROM product
+		WHERE product_id = #{product_id}
+	</select>
+	<update id="updateProduct" parameterType="spring.mvc.pj_lyw.dto.ProductDTO">
+		UPDATE product
+		SET name = #{name}, price = #{price}, category = #{category}, explanation = #{explanation}, description = #{description}, image = #{image}
+		WHERE product_id = #{product_id}
+	</update>
+	<delete id="deleteProduct" parameterType="int">
+	 	DELETE FROM product WHERE product_id = #{product_id}
+	</delete>
+	<select id="chartList" parameterType="int" resultType="spring.mvc.pj_lyw.dto.ChartDTO">
+		<![CDATA[
+		WITH
+		chart AS (SELECT total.month month
+			 , total.state state
+			 , NVL(target.cnt, 0) cnt FROM (SELECT * 
+			 	  							  FROM totalmonth tm, totalstate ts) total
+			 	  						 , (SELECT TO_CHAR(PURCHASE_DATE, 'mm') AS month
+			 									 , STATE
+			 									 , COUNT(*) AS cnt
+											  FROM purchasemanage
+											 WHERE expert_id = #{expert_id}
+											   AND (SYSDATE - PURCHASE_DATE) < 365
+										     GROUP BY (TO_CHAR(PURCHASE_DATE, 'mm'), STATE)) target
+		WHERE total.state = target.state(+)
+		AND total.month = target.month(+)
+		AND TO_NUMBER(TO_CHAR(ADD_MONTHS(SYSDATE, 1 - TO_NUMBER(total.month)), 'mm')) < 7)
+		SELECT month
+			 , SUM(CASE WHEN chart.state = '구매확정' THEN chart.cnt END)AS confirmCnt
+			 , SUM(CASE WHEN chart.state = '구매완료' THEN chart.cnt END)AS buyCnt
+			 , SUM(CASE WHEN chart.state = '결제취소' THEN chart.cnt END)AS cancelCnt
+		FROM chart
+		GROUP by month
+		ORDER BY month DESC
+		]]>
+	</select>
+</mapper>

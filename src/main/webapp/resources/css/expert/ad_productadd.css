@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+/* 우측메뉴 시작 */
+.table_div{
+	margin-top: 30px;
+}
+.table_div table{
+	border-collapse: collapse;
+	width: 700px;
+}
+.table_div table th{
+	background: white;
+}
+.table_div table th, .table_div table td{
+	height: 50px;
+	border: 1px solid white;
+	border-bottom-color : rgb(192, 192, 192);
+	text-align: center;
+	padding: 10px 2px;
+}
+
+input{
+	padding: 2px 2px;
+}
+.input {
+	width: 350px;
+	height: 40px;
+	border: 1px solid rgb(192, 192, 192);
+	padding: 0 0 0 10px;
+}
+.inputButton{
+	background: dark-yellow;
+	font-size: 16px;
+	padding: 5px 10px;
+}
+/* 우측메뉴 종료 */

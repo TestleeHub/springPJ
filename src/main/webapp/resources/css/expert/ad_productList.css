@@ -1,0 +1,88 @@
+@charset "UTF-8";
+
+#container {
+	width: 100%;
+	margin: 0 auto;
+}
+
+#contents {
+	max-width: 1240px;
+	min-width: 1240px;
+	width: 100%;
+	margin: 0 auto;
+	min-height: 800px;
+}
+
+#section2 {
+	display: flex;
+	justify-content: space-between;
+}
+
+/* 좌측메뉴 시작 */
+/* #left{
+	width: 15%;
+	margin-top: 20px;
+	height: 100%;
+	border-radius: 10px;
+	margin-right: 50px;
+}
+.left_inside{
+	position : fixed;
+	background: white;
+	margin: 0 0 0 0;
+	border-right : thin solid rgb(255,212,0);
+	padding: 10px;
+}
+.left_menubar{
+	margin-left: -40px;
+	display: inline-block;
+	justify-content: flex-end;
+}
+.left_menubar li{
+	list-style: none;
+	padding: 3px;
+}
+.left_menubar li a{
+	color: black;
+	text-decoration: none;
+}
+.product_menu{
+	font-size: 12px;
+}
+.product_menu li:hover{
+	font-size: 14px;
+	font-weight: bold;
+} */
+/* 좌측메뉴 종료 */
+/* 우측메뉴 시작 */
+#right{
+	width: 85%;
+}
+.table_div{
+	margin-top: 30px;
+}
+.table_div table{
+	border-collapse: collapse;
+	width: 800px;
+}
+.table_div table th{
+	background: #FDE3E9;
+}
+.table_div table th, .table_div table td{
+	height: 50px;
+	border: 1px solid black;
+	padding-left: 2px;
+	text-align: center;
+}
+/* 우측메뉴 종료 */
+.input {
+	width: 550px;
+	height: 40px;
+	border: 1px solid gray;
+	padding: 0 0 0 10px;
+}
+.inputButton{
+	background: dark-yellow;
+	font-size: 16px;
+	padding: 5px 10px;
+}
